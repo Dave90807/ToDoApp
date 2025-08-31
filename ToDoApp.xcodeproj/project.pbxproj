@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		75629A812E64B8A500707ABB /* ExperimentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75629A802E64B8A500707ABB /* ExperimentView.swift */; };
+		75629A8F2E650F2200707ABB /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 75629A8E2E650F2200707ABB /* .gitignore */; };
 		75C3953B2E63C09700FB2FB2 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C3953A2E63C09700FB2FB2 /* Task.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		75629A802E64B8A500707ABB /* ExperimentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentView.swift; sourceTree = "<group>"; };
+		75629A8E2E650F2200707ABB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		75C395102E63666D00FB2FB2 /* ToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75C3951D2E63666E00FB2FB2 /* ToDoAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75C395272E63666E00FB2FB2 /* ToDoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 		75C395072E63666D00FB2FB2 = {
 			isa = PBXGroup;
 			children = (
+				75629A8E2E650F2200707ABB /* .gitignore */,
 				75629A802E64B8A500707ABB /* ExperimentView.swift */,
 				75C3953A2E63C09700FB2FB2 /* Task.swift */,
 				75C395122E63666D00FB2FB2 /* ToDoApp */,
@@ -221,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75629A8F2E650F2200707ABB /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
