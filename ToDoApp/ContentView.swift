@@ -4,21 +4,60 @@
 //
 //  Created by Dave Cassidy on 8/30/25.
 //
+// Completed Task 5: Added toggle functionality
+
 
 import SwiftUI
 
 struct ContentView: View {
+    @State private var tasks = [
+        Task(name: "Make Bread"),
+        Task(name: "Make Coleslaw"),
+        Task(name: "Make Coffee"),
+        Task(name: "Make Dessert")
+    ]
+    @State private var newTaskName = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                HStack {
+                    TextField("Enter new task", text: $newTaskName)
+                        .textFieldStyle(.roundedBorder)
+                        .padding()
+                    Button(action: {
+                        if !newTaskName.isEmpty{
+                            tasks.append(Task(name: newTaskName))
+                            newTaskName = ""
+                        }
+                    }) {
+                        Text("Add")
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+                .padding()
+                
+                List {
+                    ForEach($tasks){ $task in
+                        HStack{
+                            Toggle("", isOn: $task.isCompleted)
+                                .labelsHidden()
+                            Text(task.name)
+                                .strikethrough(task.isCompleted)
+                        }
+                    }
+                }
+                .navigationTitle("To-Do List")
+            }
         }
-        .padding()
     }
 }
-
-#Preview {
-    ContentView()
+       
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
