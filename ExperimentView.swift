@@ -9,10 +9,27 @@ import SwiftUI
 
 struct ExperimentView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            
+            Text("This is a Text view")
+                .padding()
+            List {
+                Text("List item 1")
+                Text("List item 2")
+            }
+            Button("Click Me"){
+                print("Button Tapped!")
+            }
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+        }
     }
 }
 
-#Preview {
-    ExperimentView()
+struct ExperimentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ExperimentView()
+    }
 }
+
