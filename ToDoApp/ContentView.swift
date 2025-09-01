@@ -22,7 +22,7 @@ struct ContentView: View {
         NavigationStack {
             VStack {
                 HStack {
-                    TextField("Enter new task", text: $newTaskName)
+                    TextField("Add a task", text: $newTaskName)
                         .textFieldStyle(.roundedBorder)
                         .padding()
                     Button(action: {
