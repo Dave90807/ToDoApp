@@ -52,6 +52,9 @@ struct ContentView: View {
                             .strikethrough(task.isCompleted)
                         }
                     }
+                    .onDelete(perform: { indexSet in
+                        tasks.remove(atOffsets: indexSet)
+                    })
                 }
                 .navigationTitle("To-Do List")
                 .toolbar {
