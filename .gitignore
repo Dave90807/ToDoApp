@@ -3,6 +3,7 @@
 *.xcworkspace
 *.xcodeproj/project.xcworkspace
 *.xcodeproj/xcuserdata
+*.notreal
 DerivedData/
 .DS_Store
 build/
