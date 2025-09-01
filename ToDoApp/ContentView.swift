@@ -45,12 +45,22 @@ struct ContentView: View {
                         HStack{
                             Toggle("", isOn: $task.isCompleted)
                                 .labelsHidden()
-                            Text(task.name)
-                                .strikethrough(task.isCompleted)
+                            NavigationLink(task.name, destination:  {
+                                Text("Details for \(task.name)")
+                                    .navigationTitle("Task Details")
+                            })
+                            .strikethrough(task.isCompleted)
                         }
                     }
                 }
                 .navigationTitle("To-Do List")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Clear All") {
+                            tasks.removeAll()
+                        }
+                    }
+                }
             }
         }
     }
