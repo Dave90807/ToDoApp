@@ -13,6 +13,9 @@ struct ContentView: View {
     @AppStorage("tasks") private var tasksData: Data = Data()
     @State private var tasks: [Task] = []
     @State private var newTaskName = ""
+    @State private var newTaskPriority: Priority = .medium
+    @State private var newTaskDueDate: Date? = nil
+    @State private var showDatePicker = false
     
     var body: some View {
         NavigationStack {
@@ -21,10 +24,38 @@ struct ContentView: View {
                     TextField("Add a task", text: $newTaskName)
                         .textFieldStyle(.roundedBorder)
                         .padding()
+                    Picker("Priority", selection: $newTaskPriority) {
+                        ForEach(Priority.allCases, id: \.self) { priority in
+                            Text(priority.rawValue).tag(priority)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .frame(width: 100)
+                }
+                .padding(.horizontal)
+                
+                    if showDatePicker {
+                        DatePicker("Due Date", selection: Binding(
+                            get: {newTaskDueDate ?? Date() },
+                            set: {newTaskDueDate = $0}
+                        ), displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                        .padding()
+                    }
+                
+                HStack {
+                    Button("Set Due Date") {
+                        showDatePicker.toggle()
+                    }
+                    .padding(.horizontal)
                     Button(action: {
-                        if !newTaskName.isEmpty{
-                            tasks.append(Task(name: newTaskName))
+                        if !newTaskName.isEmpty {
+                            tasks.append(Task(name: newTaskName, priority: newTaskPriority, dueDate: newTaskDueDate))
+                            saveTasks()
                             newTaskName = ""
+                            newTaskPriority = .medium
+                            newTaskDueDate = nil
+                            showDatePicker = false
                         }
                     }) {
                         Text("Add")
@@ -33,8 +64,9 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
+                    .padding(.horizontal)
                 }
-                .padding()
+                .padding(.vertical)
                 
                 List {
                     ForEach(tasks.indices, id: \.self){ index in
@@ -44,11 +76,27 @@ struct ContentView: View {
                                 .onChange(of: tasks[index].isCompleted) { _, _ in
                                     saveTasks()
                                 }
-                            NavigationLink(tasks[index].name, destination:  {
-                                Text("Details for \(tasks[index].name)")
+                            VStack(alignment: .leading) {
+                                NavigationLink(tasks[index].name, destination:  {
+                                    VStack(alignment: .leading) {
+                                        Text("Name: \(tasks[index].name)")
+                                        Text("Priority: \(tasks[index].priority.rawValue)")
+                                        if let dueDate = tasks[index].dueDate {
+                                            Text("Due: \(dueDate, format: .dateTime.day().month().year())")
+                                        }
+                                    }
                                     .navigationTitle("Task Details")
-                            })
-                            .strikethrough(tasks[index].isCompleted)
+                                })
+                                .strikethrough(tasks[index].isCompleted)
+                                Text("Priority: \(tasks[index].priority.rawValue)")
+                                    .font(.caption)
+                                    .foregroundColor(tasks[index].priority == .high ? .red : .gray)
+                                if let dueDate = tasks[index].dueDate {
+                                    Text("Due: \(dueDate, format: .dateTime.day().month().year())")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                            }
                         }
                     }
                     .onDelete(perform: { indexSet in
