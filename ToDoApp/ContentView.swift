@@ -10,12 +10,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var tasks = [
-        Task(name: "Make Bread"),
-        Task(name: "Make Coleslaw"),
-        Task(name: "Make Coffee"),
-        Task(name: "Make Dessert")
-    ]
+    @AppStorage("tasks") private var tasksData: Data = Data()
+    @State private var tasks: [Task] = []
     @State private var newTaskName = ""
     
     var body: some View {
@@ -41,19 +37,23 @@ struct ContentView: View {
                 .padding()
                 
                 List {
-                    ForEach($tasks){ $task in
+                    ForEach(tasks.indices, id: \.self){ index in
                         HStack{
-                            Toggle("", isOn: $task.isCompleted)
+                            Toggle("", isOn: $tasks[index].isCompleted)
                                 .labelsHidden()
-                            NavigationLink(task.name, destination:  {
-                                Text("Details for \(task.name)")
+                                .onChange(of: tasks[index].isCompleted) { _, _ in
+                                    saveTasks()
+                                }
+                            NavigationLink(tasks[index].name, destination:  {
+                                Text("Details for \(tasks[index].name)")
                                     .navigationTitle("Task Details")
                             })
-                            .strikethrough(task.isCompleted)
+                            .strikethrough(tasks[index].isCompleted)
                         }
                     }
                     .onDelete(perform: { indexSet in
                         tasks.remove(atOffsets: indexSet)
+                        saveTasks()
                     })
                 }
                 .navigationTitle("To-Do List")
@@ -61,10 +61,39 @@ struct ContentView: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Clear All") {
                             tasks.removeAll()
+                            saveTasks()
                         }
                     }
                 }
             }
+            .onAppear {
+                loadTasks()
+            }
+        }
+    }
+    
+    private func saveTasks() {
+        do {
+            let encoded = try JSONEncoder().encode(tasks)
+            tasksData = encoded
+            print("Saved tasks: \(tasks)")
+        } catch {
+            print("Save failed: \(error)")
+        }
+    }
+    
+    private func loadTasks() {
+        do {
+            if !tasksData.isEmpty {
+                let decoded = try JSONDecoder().decode([Task].self, from: tasksData)
+                tasks = decoded
+                print("Loaded tasks: \(tasks)")
+            } else {
+                print("No tasks data to load")
+            }
+        } catch {
+            print("Load failed: \(error)")
+            tasks = []
         }
     }
 }
