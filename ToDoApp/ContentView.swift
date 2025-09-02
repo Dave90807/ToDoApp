@@ -55,6 +55,10 @@ struct ContentView: View {
                         tasks.remove(atOffsets: indexSet)
                         saveTasks()
                     })
+                    .onMove(perform: { indices, newOffset in
+                        tasks.move(fromOffsets: indices, toOffset: newOffset)
+                        saveTasks()
+                    })
                 }
                 .navigationTitle("To-Do List")
                 .toolbar {
@@ -63,6 +67,9 @@ struct ContentView: View {
                             tasks.removeAll()
                             saveTasks()
                         }
+                    }
+                    ToolbarItem(placement: .topBarLeading){
+                        EditButton()
                     }
                 }
             }
