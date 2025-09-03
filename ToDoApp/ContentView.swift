@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var newTaskPriority: Priority = .medium
     @State private var newTaskDueDate: Date? = nil
     @State private var showDatePicker = false
+    @State private var showClearAlert = false
     
     var body: some View {
         NavigationStack {
@@ -112,8 +113,16 @@ struct ContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Clear All") {
-                            tasks.removeAll()
-                            saveTasks()
+                            showClearAlert = true
+                        }
+                        .alert("Clear All Tasks", isPresented: $showClearAlert) {
+                            Button("Cancel", role: .cancel) {}
+                            Button("Clear", role: .destructive) {
+                                tasks.removeAll()
+                                saveTasks()
+                            }
+                        } message: {
+                            Text("Are you sure you want to delete all tasks?")
                         }
                     }
                     ToolbarItem(placement: .topBarLeading){
